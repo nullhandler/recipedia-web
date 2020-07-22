@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:recipedia/Models/ApiService.dart';
+import 'package:recipedia/Providers/ApiService.dart';
 
 void main() {
   runApp(MyApp());
