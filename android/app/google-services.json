@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "826748210888",
+    "firebase_url": "https://recipedia-283216.firebaseio.com",
+    "project_id": "recipedia-283216",
+    "storage_bucket": "recipedia-283216.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:826748210888:android:4f070d4b7cd949228edffd",
+        "android_client_info": {
+          "package_name": "com.example.recipedia"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "826748210888-6u4hb1ggh0nas82sikvcikpi2kccvhhj.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.recipedia",
+            "certificate_hash": "86ede4b6b7e54e0499850d43c7ecfdc7d2ed8f17"
+          }
+        },
+        {
+          "client_id": "826748210888-ch6uvf78b5lj6ofa6lumti58bj4dmo62.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBE-6OqXhWEI5DVKRJQuTIG5ca9T3QpnJA"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "826748210888-ch6uvf78b5lj6ofa6lumti58bj4dmo62.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

@@ -56,11 +56,13 @@ class _LoginScreenState extends State<LoginScreen> {
     return OutlineButton(
       splashColor: Colors.grey,
       onPressed: () async {
-        _googleSignIn.signIn();
+       GoogleSignInAccount user = await _googleSignIn.signIn();
+       print(user);
       },
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(40)),
       highlightElevation: 0,
       borderSide: BorderSide(color: Colors.white),
+      
       child: Padding(
         padding: const EdgeInsets.fromLTRB(0, 10, 0, 10),
         child: Row(
