@@ -15,15 +15,6 @@ class _WebHomeState extends State<WebHome> {
 //int _counter = 0;
   ApiProvider test = ApiProvider();
 
-  // void _incrementCounter() async{
-  //  test.getRecipes().then((value) => {
-  //      print(value[0])
-  //  });
-  //   setState(() {
-  //     _counter++;
-  //   });
-  // }
-
   GoogleSignIn _googleSignIn = GoogleSignIn(
     scopes: [
       'email',
@@ -53,6 +44,9 @@ class _WebHomeState extends State<WebHome> {
         child: RaisedButton(
           child: Text("index:"),
           onPressed: () {
+            // test.createRecipe(null, null);
+            //test.rate("5f19b5e7e00f343fcc0a36fd", 1);
+            //test.like("5f19b5e7e00f343fcc0a36fd");
             _handleSignIn();
           },
         ),

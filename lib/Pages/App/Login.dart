@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:google_sign_in/google_sign_in.dart';
+import 'package:recipedia/Providers/ApiService.dart';
 import '../../keys.dart' as secret;
 import 'dart:ui' as ui;
+import 'package:shared_preferences/shared_preferences.dart';
 
 class LoginScreen extends StatefulWidget {
   @override
@@ -10,6 +12,19 @@ class LoginScreen extends StatefulWidget {
 
 class _LoginScreenState extends State<LoginScreen> {
   GoogleSignIn _googleSignIn = GoogleSignIn(clientId: secret.clientID);
+
+  SharedPreferences prefs;
+  ApiProvider apiProvider = ApiProvider();
+
+  init() async {
+    prefs = await SharedPreferences.getInstance();
+  }
+
+  @override
+  void initState() {
+    init();
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -52,17 +67,27 @@ class _LoginScreenState extends State<LoginScreen> {
     );
   }
 
+  Future<void> _handleSignIn() async {
+    try {
+      GoogleSignInAccount user = await _googleSignIn.signIn();
+      if (user != null) {
+        apiProvider
+            .logIn(user.id, user.displayName, user.photoUrl)
+            .then((value) => {});
+        prefs.setString("googleID", user.id);
+      }
+    } catch (error) {
+      print(error);
+    }
+  }
+
   Widget _signInButton() {
     return OutlineButton(
       splashColor: Colors.grey,
-      onPressed: () async {
-       GoogleSignInAccount user = await _googleSignIn.signIn();
-       print(user);
-      },
+      onPressed: () => _handleSignIn(),
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(40)),
       highlightElevation: 0,
       borderSide: BorderSide(color: Colors.white),
-      
       child: Padding(
         padding: const EdgeInsets.fromLTRB(0, 10, 0, 10),
         child: Row(
