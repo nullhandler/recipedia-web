@@ -68,6 +68,9 @@ flutter:
     - family: Sans-Serif
       fonts:
         - asset: assets/Poppins-Regular.ttf
+    - family: RobotoMono
+      fonts:
+        - asset: assets/DancingScript-Bold.ttf
   #       - asset: fonts/Schyler-Italic.ttf
   #         style: italic
   #   - family: Trajan Pro
