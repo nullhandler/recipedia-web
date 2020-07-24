@@ -5,15 +5,15 @@ import 'package:recipedia/Pages/App/Search.dart';
 import 'package:recipedia/widgets/navbar.dart';
 
 class AppHome extends StatefulWidget {
-  AppHome({Key key, this.title}) : super(key: key);
+  AppHome({Key key, this.title, this.pic}) : super(key: key);
   final String title;
+  final String pic;
 
   @override
   _AppHomeState createState() => _AppHomeState();
 }
 
 class _AppHomeState extends State<AppHome> with TickerProviderStateMixin {
- 
   int _index = 0;
   TabController _tabController;
   AnimationController _animationController;
@@ -39,6 +39,25 @@ class _AppHomeState extends State<AppHome> with TickerProviderStateMixin {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        leading: IconButton(
+            icon: Icon(
+              Icons.add,
+              color: Colors.black,
+            ),
+            onPressed: () {}),
+        // actions: [ClipOval(child: Image.network('${widget.pic}'))],
+        actions: [
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Container(
+                width: 40.0,
+                height: 40.0,
+                decoration: BoxDecoration(
+                    shape: BoxShape.circle,
+                    image: DecorationImage(
+                        fit: BoxFit.fill, image: NetworkImage('${widget.pic}')))),
+          )
+        ],
         title: Text(
           "Recipedia",
           style: TextStyle(

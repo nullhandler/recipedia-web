@@ -77,9 +77,10 @@ class _LoginScreenState extends State<LoginScreen> {
             .logIn(user.id, user.displayName, user.photoUrl)
             .then((value) => {
                   prefs.setString("googleID", user.id),
+                  prefs.setString("photo", user.photoUrl),
                   Navigator.push(
                     context,
-                    MaterialPageRoute(builder: (context) => AppHome()),
+                    MaterialPageRoute(builder: (context) => AppHome(pic: user.photoUrl,)),
                   )
                 });
       }

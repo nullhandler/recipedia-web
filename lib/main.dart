@@ -18,10 +18,12 @@ class MyApp extends StatefulWidget {
 class _MyAppState extends State<MyApp> {
   bool isLoggedIn = false;
   SharedPreferences prefs;
+  String profilePic;
 
   init() async {
     prefs = await SharedPreferences.getInstance();
     if (prefs.getString("googleID") != null) {
+       profilePic = prefs.getString("photo");
       setState(() {
         isLoggedIn = true;
         print(isLoggedIn);
@@ -55,7 +57,7 @@ class _MyAppState extends State<MyApp> {
       if (check != true) {
         return AppHome();
       } else {
-        return AppHome();
+        return AppHome(pic: profilePic,);
       }
     }
   }
