@@ -53,7 +53,7 @@ class _MyAppState extends State<MyApp> {
       return WebHome();
     } else {
       if (check != true) {
-        return LoginScreen();
+        return AppHome();
       } else {
         return AppHome();
       }

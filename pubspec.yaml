@@ -30,7 +30,6 @@ dependencies:
   cupertino_icons: ^0.1.3
   characters: ^1.0.0
   http: ^0.12.2
-  floating_bottom_navigation_bar: ^1.3.0
   google_sign_in: ^4.5.1
   dio: ^3.0.9
   shared_preferences: ^0.5.8

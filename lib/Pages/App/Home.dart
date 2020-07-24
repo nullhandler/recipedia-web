@@ -1,8 +1,8 @@
-import 'package:floating_bottom_navigation_bar/floating_bottom_navigation_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:recipedia/Pages/App/Browse.dart';
 import 'package:recipedia/Pages/App/Liked.dart';
 import 'package:recipedia/Pages/App/Search.dart';
+import 'package:recipedia/widgets/navbar.dart';
 
 class AppHome extends StatefulWidget {
   AppHome({Key key, this.title}) : super(key: key);
