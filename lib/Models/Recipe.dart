@@ -1,13 +1,13 @@
-class Recipe {
-  List<Data> data;
+class RecipeModel {
+  List<Recipe> data;
 
-  Recipe({this.data});
+  RecipeModel({this.data});
 
-  Recipe.fromJson(Map<String, dynamic> json) {
+  RecipeModel.fromJson(Map<String, dynamic> json) {
     if (json['data'] != null) {
-      data = new List<Data>();
+      data = new List<Recipe>();
       json['data'].forEach((v) {
-        data.add(new Data.fromJson(v));
+        data.add(new Recipe.fromJson(v));
       });
     }
   }
@@ -21,7 +21,7 @@ class Recipe {
   }
 }
 
-class Data {
+class Recipe{
   int likes;
   double rating;
   int ratingCount;
@@ -34,7 +34,7 @@ class Data {
   String creationDate;
   int iV;
 
-  Data(
+  Recipe(
       {this.likes,
       this.rating,
       this.ratingCount,
@@ -47,7 +47,7 @@ class Data {
       this.creationDate,
       this.iV});
 
-  Data.fromJson(Map<String, dynamic> json) {
+  Recipe.fromJson(Map<String, dynamic> json) {
     likes = json['likes'];
     rating = json['rating'].toDouble();
     ratingCount = json['ratingCount'];

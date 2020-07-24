@@ -19,7 +19,11 @@ class _BrowseState extends State<Browse> {
             itemCount: recipeSnap.data.length,
             itemBuilder: (context, index) {
               return Card(
-                child: Text("$index"),
+                child: Row(
+                  children:<Widget>[
+                    Text('${recipeSnap.data[index].title}')
+                  ]
+                )
               );
             },
           );

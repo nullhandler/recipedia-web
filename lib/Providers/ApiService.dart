@@ -13,7 +13,7 @@ class ApiProvider {
     final response = await http.get(baseUrl + '/getAll');
     if (response.statusCode == 200) {
       List<Recipe> temp = [];
-      print(Recipe.fromJson(json.decode(response.body)));
+    temp =  RecipeModel.fromJson(json.decode(response.body)).data;
       // temp.add(Recipe.fromJson(json.decode(response.body)));
       return temp;
      
