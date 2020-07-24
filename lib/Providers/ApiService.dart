@@ -12,10 +12,9 @@ class ApiProvider {
   Future<List<Recipe>> getRecipes() async {
     final response = await http.get(baseUrl + '/getAll');
     if (response.statusCode == 200) {
-      print(json.decode(response.body));
       List<Recipe> temp = [];
-      temp.add(Recipe.fromJson(json.decode(response.body)));
-       print(temp);
+      print(Recipe.fromJson(json.decode(response.body)));
+      // temp.add(Recipe.fromJson(json.decode(response.body)));
       return temp;
      
     } else {

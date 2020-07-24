@@ -9,13 +9,13 @@ class Browse extends StatefulWidget {
 class _BrowseState extends State<Browse> {
   ApiProvider apiProvider = ApiProvider();
 
-  
-
   Widget recipes() {
     return FutureBuilder(
       builder: (context, recipeSnap) {
         if (recipeSnap.hasData) {
+          print(recipeSnap.data);
           return ListView.builder(
+            shrinkWrap: true,
             itemCount: recipeSnap.data.length,
             itemBuilder: (context, index) {
               return Card(

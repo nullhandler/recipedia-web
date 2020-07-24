@@ -49,7 +49,7 @@ class Data {
 
   Data.fromJson(Map<String, dynamic> json) {
     likes = json['likes'];
-    rating = json['rating'];
+    rating = json['rating'].toDouble();
     ratingCount = json['ratingCount'];
     ingredients = json['ingredients'].cast<String>();
     steps = json['steps'].cast<String>();
