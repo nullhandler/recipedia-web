@@ -23,7 +23,7 @@ class Recipe {
 
 class Data {
   int likes;
-  int rating;
+  double rating;
   int ratingCount;
   List<String> ingredients;
   List<String> steps;

@@ -1,19 +1,40 @@
 import 'package:flutter/material.dart';
-import 'package:google_sign_in/google_sign_in.dart';
 import 'package:recipedia/Pages/App/Home.dart';
 import 'package:recipedia/Pages/Website/Home.dart';
 import 'package:flutter/foundation.dart' show kIsWeb;
+import 'package:shared_preferences/shared_preferences.dart';
 import 'Pages/App/Login.dart';
-import 'keys.dart' as secret;
 
 void main() {
   runApp(MyApp());
 }
 
 // ignore: must_be_immutable
-class MyApp extends StatelessWidget {
-    GoogleSignIn _googleSignIn = GoogleSignIn(clientId: secret.clientID);
-  // This widget is the root of your application.
+class MyApp extends StatefulWidget {
+  @override
+  _MyAppState createState() => _MyAppState();
+}
+
+class _MyAppState extends State<MyApp> {
+  bool isLoggedIn = false;
+  SharedPreferences prefs;
+
+  init() async {
+    prefs = await SharedPreferences.getInstance();
+    if (prefs.getString("googleID") != null) {
+      setState(() {
+        isLoggedIn = true;
+        print(isLoggedIn);
+      });
+    }
+  }
+
+  @override
+  void initState() {
+    init();
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -24,14 +45,18 @@ class MyApp extends StatelessWidget {
           primarySwatch: Colors.blue,
           visualDensity: VisualDensity.adaptivePlatformDensity,
         ),
-        home: (kIsWeb)
-            ? WebHome()
-            // running on the web
-            : LoginScreen());
+        home: screenToReturn(isLoggedIn));
   }
 
- void screenToReturn(){
-  print(_googleSignIn.isSignedIn());
- }
-
+  Widget screenToReturn(bool check) {
+    if (kIsWeb) {
+      return WebHome();
+    } else {
+      if (check != true) {
+        return LoginScreen();
+      } else {
+        return AppHome();
+      }
+    }
+  }
 }

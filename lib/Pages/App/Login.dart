@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:google_sign_in/google_sign_in.dart';
+import 'package:recipedia/Pages/App/Home.dart';
 import 'package:recipedia/Providers/ApiService.dart';
 import '../../keys.dart' as secret;
 import 'dart:ui' as ui;
@@ -29,6 +30,7 @@ class _LoginScreenState extends State<LoginScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.black,
       body: Stack(children: <Widget>[
         Container(
           decoration: new BoxDecoration(
@@ -73,8 +75,13 @@ class _LoginScreenState extends State<LoginScreen> {
       if (user != null) {
         apiProvider
             .logIn(user.id, user.displayName, user.photoUrl)
-            .then((value) => {});
-        prefs.setString("googleID", user.id);
+            .then((value) => {
+                  prefs.setString("googleID", user.id),
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => AppHome()),
+                  )
+                });
       }
     } catch (error) {
       print(error);
@@ -83,7 +90,7 @@ class _LoginScreenState extends State<LoginScreen> {
 
   Widget _signInButton() {
     return OutlineButton(
-      splashColor: Colors.grey,
+      splashColor: Colors.black,
       onPressed: () => _handleSignIn(),
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(40)),
       highlightElevation: 0,
