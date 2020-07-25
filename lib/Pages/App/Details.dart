@@ -16,7 +16,6 @@ class RecipeDetails extends StatefulWidget {
 class _RecipeDetailsState extends State<RecipeDetails> {
   @override
   void initState() {
-    print(widget.recipe.rating);
     super.initState();
   }
 
@@ -27,6 +26,7 @@ class _RecipeDetailsState extends State<RecipeDetails> {
         backgroundColor: Colors.white,
         body: SingleChildScrollView(
           child: Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
               Stack(
                 children: [
@@ -37,7 +37,7 @@ class _RecipeDetailsState extends State<RecipeDetails> {
                               bottomLeft: Radius.circular(40),
                               bottomRight: Radius.circular(40))),
                       width: MediaQuery.of(context).size.width,
-                      height: 200.0,
+                      height: 150,
                       child: Padding(
                         padding: const EdgeInsets.all(8.0),
                         child: Align(
@@ -111,7 +111,7 @@ class _RecipeDetailsState extends State<RecipeDetails> {
                                 ),
                               )
                             : Padding(
-                                padding: EdgeInsets.only(top: 100.0),
+                                padding: EdgeInsets.only(top: 50.0),
                                 child: ClipOval(
                                     child: Image.asset(
                                   "assets/background-app.jpg",
@@ -136,22 +136,27 @@ class _RecipeDetailsState extends State<RecipeDetails> {
                   ),
                 ),
               ),
-              Padding(
-                  padding: const EdgeInsets.only(top: 10.0),
-                  child: RatingBar(
-                    itemSize: 25.0,
-                    initialRating: widget.recipe.rating ?? 3.5,
-                    minRating: 1,
-                    direction: Axis.horizontal,
-                    allowHalfRating: true,
-                    itemCount: 5,
-                    itemPadding: EdgeInsets.symmetric(horizontal: 4.0),
-                    itemBuilder: (context, _) => Icon(
-                      Icons.star,
-                      color: Colors.redAccent,
-                    ),
-                    onRatingUpdate: (rating) {},
-                  )),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Padding(
+                      padding: const EdgeInsets.only(top: 10.0),
+                      child: RatingBar(
+                        itemSize: 25.0,
+                        initialRating: widget.recipe.rating ?? 3.5,
+                        minRating: 1,
+                        direction: Axis.horizontal,
+                        allowHalfRating: true,
+                        itemCount: 5,
+                        itemPadding: EdgeInsets.symmetric(horizontal: 4.0),
+                        itemBuilder: (context, _) => Icon(
+                          Icons.star,
+                          color: Colors.redAccent,
+                        ),
+                        onRatingUpdate: (rating) {},
+                      )),
+                ],
+              ),
               Padding(
                   padding: const EdgeInsets.only(top: 10.0),
                   child: Row(
@@ -190,7 +195,7 @@ class _RecipeDetailsState extends State<RecipeDetails> {
                         padding: const EdgeInsets.all(2.0),
                         child: Text(
                           widget.recipe.time != null
-                              ? '${widget.recipe.time}' + 'Min'
+                              ? '${widget.recipe.time}' + ' Min'
                               : '30 Min',
                           overflow: TextOverflow.ellipsis,
                           textAlign: TextAlign.center,
@@ -203,7 +208,52 @@ class _RecipeDetailsState extends State<RecipeDetails> {
                         ),
                       ),
                     ],
-                  ))
+                  )),
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Text(
+                  'Ingredients',
+                  overflow: TextOverflow.ellipsis,
+                  style: new TextStyle(
+                    fontSize: 18.0,
+                    color: new Color(0xFF212121),
+                  ),
+                ),
+              ),
+              ListView.builder(
+                  shrinkWrap: true,
+                  itemCount: widget.recipe.ingredients.length,
+                  itemBuilder: (context, pos) {
+                    return Padding(
+                      padding: const EdgeInsets.symmetric(
+                          vertical: 2, horizontal: 32),
+                      child:
+                          Row(children: [Text(widget.recipe.ingredients[pos])]),
+                    );
+                  }),
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Text(
+                  'Steps',
+                  overflow: TextOverflow.ellipsis,
+                  style: new TextStyle(
+                    fontSize: 18.0,
+                    color: new Color(0xFF212121),
+                  ),
+                ),
+              ),
+              ListView.builder(
+                  shrinkWrap: true,
+                  itemCount: widget.recipe.steps.length,
+                  itemBuilder: (context, pos) {
+                    return Padding(
+                      padding: const EdgeInsets.symmetric(
+                          vertical: 2, horizontal: 32),
+                      child: Row(children: [
+                        Text('Step ${pos + 1}: ${widget.recipe.steps[pos]}')
+                      ]),
+                    );
+                  }),
             ],
           ),
         ),

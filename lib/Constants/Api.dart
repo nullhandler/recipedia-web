@@ -1,2 +1,3 @@
-const baseURL = 'http://769bdfb2d1f2.ngrok.io/api';
-const imagesURL = 'http://769bdfb2d1f2.ngrok.io';
+const url = 'http://4b1385464b49.ngrok.io';
+const baseURL = '$url/api';
+const imagesURL = url;
