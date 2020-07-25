@@ -18,11 +18,7 @@ class _AppHomeState extends State<AppHome> with TickerProviderStateMixin {
   TabController _tabController;
   AnimationController _animationController;
 
-  final List<Widget> _listTabs = [
-    Browse(),
-    Search(), // CHANGE TO SEARCH
-    LikedRecipes()
-  ];
+  final List<Widget> _listTabs = [Browse(), Browse(), LikedRecipes()];
 
   @override
   void initState() {
@@ -55,7 +51,8 @@ class _AppHomeState extends State<AppHome> with TickerProviderStateMixin {
                 decoration: BoxDecoration(
                     shape: BoxShape.circle,
                     image: DecorationImage(
-                        fit: BoxFit.fill, image: NetworkImage('${widget.pic}')))),
+                        fit: BoxFit.fill,
+                        image: NetworkImage('${widget.pic}')))),
           )
         ],
         title: Text(
@@ -81,11 +78,15 @@ class _AppHomeState extends State<AppHome> with TickerProviderStateMixin {
         selectedItemColor: Colors.white,
         borderRadius: 40,
         onTap: (int val) {
-          setState(() {
-            _index = val;
-            _tabController.animateTo(_index);
-            _animationController.reverse();
-          });
+          if (val == 1) {
+            showSearch(context: context, delegate: Search());
+          } else {
+            setState(() {
+              _index = val;
+              _tabController.animateTo(_index);
+              _animationController.reverse();
+            });
+          }
         },
         currentIndex: _index,
         items: [
