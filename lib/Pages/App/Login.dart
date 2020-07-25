@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:recipedia/Pages/App/Home.dart';
 import 'package:recipedia/Providers/ApiService.dart';
@@ -11,9 +12,10 @@ class LoginScreen extends StatefulWidget {
   _LoginScreenState createState() => _LoginScreenState();
 }
 
-class _LoginScreenState extends State<LoginScreen> {
+class _LoginScreenState extends State<LoginScreen>
+    with TickerProviderStateMixin {
   GoogleSignIn _googleSignIn = GoogleSignIn(clientId: secret.clientID);
-
+  bool isLoading = false;
   SharedPreferences prefs;
   ApiProvider apiProvider = ApiProvider();
 
@@ -59,7 +61,16 @@ class _LoginScreenState extends State<LoginScreen> {
                         )),
                   ),
                   SizedBox(height: 100),
-                  Align(child: _signInButton()),
+                  Align(
+                      child: isLoading
+                          ? SpinKitWave(
+                              color: Colors.redAccent,
+                              size: 50.0,
+                              controller: AnimationController(
+                                  vsync: this,
+                                  duration: const Duration(milliseconds: 1200)),
+                            )
+                          : _signInButton()),
                 ],
               ),
             ),
@@ -71,6 +82,9 @@ class _LoginScreenState extends State<LoginScreen> {
 
   Future<void> _handleSignIn() async {
     try {
+      setState(() {
+        isLoading = true;
+      });
       GoogleSignInAccount user = await _googleSignIn.signIn();
       if (user != null) {
         apiProvider
@@ -80,9 +94,17 @@ class _LoginScreenState extends State<LoginScreen> {
                   prefs.setString("photo", user.photoUrl),
                   Navigator.push(
                     context,
-                    MaterialPageRoute(builder: (context) => AppHome(pic: user.photoUrl,)),
+                    MaterialPageRoute(
+                        builder: (context) => AppHome(
+                              pic: user.photoUrl,
+                            )),
                   )
                 });
+        if (mounted) {
+          setState(() {
+            isLoading = false;
+          });
+        }
       }
     } catch (error) {
       print(error);

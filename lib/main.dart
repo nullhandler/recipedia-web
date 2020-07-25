@@ -55,7 +55,7 @@ class _MyAppState extends State<MyApp> {
       return WebHome();
     } else {
       if (check != true) {
-        return AppHome();
+        return LoginScreen();
       } else {
         return AppHome(pic: profilePic,);
       }

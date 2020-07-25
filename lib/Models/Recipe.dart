@@ -31,6 +31,7 @@ class Recipe{
   String title;
   String userID;
   bool isVeg;
+  double time;
   String recipePic;
   String creationDate;
   int iV;
@@ -46,6 +47,7 @@ class Recipe{
       this.userID,
       this.isVeg,
       this.recipePic,
+      this.time,
       this.creationDate,
       this.iV});
 
@@ -59,6 +61,7 @@ class Recipe{
     title = json['title'];
     userID = json['userID'];
     isVeg = json['is_veg'];
+    time =  json['time'].toDouble();
     recipePic = json['recipePic'];
     creationDate = json['creation_date'];
     iV = json['__v'];
@@ -75,6 +78,7 @@ class Recipe{
     data['title'] = this.title;
     data['userID'] = this.userID;
     data['is_veg'] = this.isVeg;
+    data['time'] = this.time;
     data['recipePic'] = this.recipePic;
     data['creation_date'] = this.creationDate;
     data['__v'] = this.iV;

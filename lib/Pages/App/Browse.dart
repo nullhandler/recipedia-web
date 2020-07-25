@@ -1,15 +1,19 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:recipedia/Pages/App/Details.dart';
 import 'package:recipedia/Providers/ApiService.dart';
 import 'package:recipedia/Constants/Api.dart' as urls;
+import 'package:flutter_spinkit/flutter_spinkit.dart';
+import 'package:shimmer/shimmer.dart';
 
 class Browse extends StatefulWidget {
   @override
   _BrowseState createState() => _BrowseState();
 }
 
-class _BrowseState extends State<Browse> {
+class _BrowseState extends State<Browse> with TickerProviderStateMixin {
   ApiProvider apiProvider = ApiProvider();
-
+  Future get;
   Widget recipes() {
     return FutureBuilder(
       builder: (context, recipeSnap) {
@@ -21,69 +25,114 @@ class _BrowseState extends State<Browse> {
               shrinkWrap: true,
               itemCount: recipeSnap.data.length,
               itemBuilder: (context, index) {
-                return Container(
-                  height: 150,
-                  child: Card(
-                    semanticContainer: true,
-                    clipBehavior: Clip.antiAliasWithSaveLayer,
-                    child: Row(
-                      children: [
-                        recipeSnap.data[index].recipePic != null
-                            ? ClipRRect(
-                              borderRadius: BorderRadius.circular(10),
-                                                          child: Image.network(
-                                  urls.imagesURL +
-                                      "${recipeSnap.data[index].recipePic}",
-                                  fit: BoxFit.fill,
-                                  width: 150,
-                                ),
-                            )
-                            : ClipRRect(
-                              borderRadius: BorderRadius.circular(10),
-                                                          child:Image.asset(
-                                "assets/background-app.jpg",
-                                width: 150,
-                                fit: BoxFit.fill,
+                return GestureDetector(
+                  onTap: () => {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => RecipeDetails(
+                                recipe: recipeSnap.data[index],
                               )),
-                        Flexible(
-                          child: Padding(
-                            padding: const EdgeInsets.only(left: 20.0),
-                            child: Text(
-                              '${recipeSnap.data[index].title}',
-                              overflow: TextOverflow.ellipsis,
-                              textAlign: TextAlign.left,
-                              maxLines: 3,
-                              style: new TextStyle(
-                                fontSize: 16.0,
-                                color: new Color(0xFF212121),
-                                fontWeight: FontWeight.bold,
+                    )
+                  },
+                  child: Hero(
+                    tag: 'recipe' + recipeSnap.data[index].sId,
+                                      child: Container(
+                      height: 150,
+                      child: Card(
+                        semanticContainer: true,
+                        clipBehavior: Clip.antiAliasWithSaveLayer,
+                        child: Row(
+                          children: [
+                            recipeSnap.data[index].recipePic != null
+                                ? ClipRRect(
+                                    borderRadius: BorderRadius.circular(10),
+                                    child: CachedNetworkImage(
+                                      imageUrl: urls.imagesURL +
+                                          "${recipeSnap.data[index].recipePic}",
+                                      imageBuilder: (context, imageProvider) =>
+                                          Container(
+                                        width: 150,
+                                        decoration: BoxDecoration(
+                                            image: DecorationImage(
+                                          image: imageProvider,
+                                          fit: BoxFit.fill,
+                                        )),
+                                      ),
+                                      placeholder: (context, url) =>
+                                          Shimmer.fromColors(
+                                        baseColor: Colors.grey[400],
+                                        highlightColor: Colors.white,
+                                        child: Container(width: 150),
+                                      ),
+                                      errorWidget: (context, url, error) =>
+                                          Icon(Icons.error),
+                                    ),
+                                    //                           child: Image.network(
+
+                                    // ),
+                                  )
+                                : ClipRRect(
+                                    borderRadius: BorderRadius.circular(10),
+                                    child: Image.asset(
+                                      "assets/background-app.jpg",
+                                      width: 150,
+                                      fit: BoxFit.fill,
+                                    )),
+                            Flexible(
+                              child: Padding(
+                                padding: const EdgeInsets.only(left: 20.0),
+                                child: Text(
+                                  '${recipeSnap.data[index].title}',
+                                  overflow: TextOverflow.ellipsis,
+                                  textAlign: TextAlign.left,
+                                  maxLines: 3,
+                                  style: new TextStyle(
+                                    fontSize: 16.0,
+                                    color: new Color(0xFF212121),
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ),
                               ),
-                            ),
-                          ),
-                        )
-                      ],
+                            )
+                          ],
+                        ),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(10.0),
+                        ),
+                        elevation: 2,
+                        margin: EdgeInsets.all(10),
+                      ),
                     ),
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(10.0),
-                    ),
-                    elevation: 2,
-                    margin: EdgeInsets.all(10),
                   ),
                 );
               },
             ),
           );
+        } else if (recipeSnap.connectionState == ConnectionState.none ||
+            recipeSnap.connectionState == ConnectionState.waiting) {
+          return SpinKitWave(
+            color: Colors.redAccent,
+            size: 50.0,
+            controller: AnimationController(
+                vsync: this, duration: const Duration(milliseconds: 1200)),
+          );
         } else {
-          if (recipeSnap.connectionState == ConnectionState.none ||
-              recipeSnap.hasData == null) {
+          if (recipeSnap.hasData == null || recipeSnap.hasError) {
             //print('project snapshot data is: ${recipeSnap.data}');
-            return Container();
+            return Align(child: Center(child: Text("Error")));
           }
           return Align(child: Center(child: Text("Error")));
         }
       },
-      future: apiProvider.getRecipes(),
+      future: get,
     );
+  }
+
+  @override
+  void initState() {
+    get = apiProvider.getRecipes();
+    super.initState();
   }
 
   @override
