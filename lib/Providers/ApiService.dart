@@ -1,6 +1,6 @@
 import 'dart:io';
 import 'package:dio/dio.dart';
-import 'package:flutter/cupertino.dart';
+
 import 'package:http/http.dart' as http;
 import 'package:recipedia/Models/Recipe.dart';
 import '../Constants/Api.dart' as api;
@@ -13,10 +13,9 @@ class ApiProvider {
     final response = await http.get(baseUrl + '/getAll');
     if (response.statusCode == 200) {
       List<Recipe> temp = [];
-    temp =  RecipeModel.fromJson(json.decode(response.body)).data;
+      temp = RecipeModel.fromJson(json.decode(response.body)).data;
       // temp.add(Recipe.fromJson(json.decode(response.body)));
       return temp;
-     
     } else {
       throw Exception('Unable to fetch products from the REST API');
     }
@@ -25,7 +24,7 @@ class ApiProvider {
   Future<void> createRecipe(File file, Map data) async {
     var formdata = FormData.fromMap(data);
 
-  // TO DO , ADD FILE UPLOAD 
+    // TO DO , ADD FILE UPLOAD
 
     var response = await Dio().post(baseUrl + '/create', data: formdata);
     print(response);
@@ -54,8 +53,18 @@ class ApiProvider {
     return null;
   }
 
-    Future<List<Recipe>> searchRecipe() async {
-    final response = await http.get(baseUrl + '/search');
-    // IMPLEMENT SEARCH 
+  Future<List<Recipe>> searchRecipe(String query) async {
+    final response = await http.get(baseUrl + '/search?q=' + query);
+    print(response.body);
+    if (json.decode(response.body)['error'] != null) {
+      return Future.error("Error Info", StackTrace.fromString("Recipe Not Found"));
+    } else {
+      List<Recipe> temp = [];
+      temp = RecipeModel.fromJson(json.decode(response.body)).data;
+      return temp;
+    }
+    // if (response.statusCode != 200) {
+    //   throw Exception('Failed to load');
+    // }
   }
 }
