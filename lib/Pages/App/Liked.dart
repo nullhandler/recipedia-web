@@ -15,107 +15,114 @@ class LikedRecipes extends StatefulWidget {
 class _LikedRecipesState extends State<LikedRecipes>
     with TickerProviderStateMixin {
   ApiProvider apiProvider = ApiProvider();
+  List liked = [];
+  String userID, profilePic;
   Future get;
   String id;
   Widget recipes() {
     return FutureBuilder(
       builder: (context, recipeSnap) {
         if (recipeSnap.hasData) {
-          if(recipeSnap.data!=0){
-          return Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: ListView.builder(
-              shrinkWrap: true,
-              itemCount: recipeSnap.data.length,
-              itemBuilder: (context, index) {
-                return GestureDetector(
-                  onTap: () => {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) => RecipeDetails(
-                                recipe: recipeSnap.data[index],
-                              )),
-                    )
-                  },
-                  child: Hero(
-                    tag: 'recipe' + recipeSnap.data[index].sId,
-                    child: Container(
-                      height: 130,
-                      child: Card(
-                        color: Colors.white,
-                        semanticContainer: true,
-                        clipBehavior: Clip.antiAliasWithSaveLayer,
-                        child: Row(
-                          children: [
-                            recipeSnap.data[index].recipePic != null
-                                ? ClipRRect(
-                                    borderRadius: BorderRadius.circular(20),
-                                    child: CachedNetworkImage(
-                                      imageUrl: urls.imagesURL +
-                                          "${recipeSnap.data[index].recipePic}",
-                                      imageBuilder: (context, imageProvider) =>
-                                          Container(
-                                        width: 150,
-                                        decoration: BoxDecoration(
-                                            image: DecorationImage(
-                                          image: imageProvider,
-                                          fit: BoxFit.fill,
-                                        )),
+          if (recipeSnap.data != 0) {
+            return Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: ListView.builder(
+                shrinkWrap: true,
+                itemCount: recipeSnap.data.length,
+                itemBuilder: (context, index) {
+                  return GestureDetector(
+                    onTap: () => {
+                      print(liked),
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => RecipeDetails(
+                                  likedRecipes: liked,
+                                  recipe: recipeSnap.data[index],
+                                  userID: userID,
+                                  profilePic: profilePic,
+                                )),
+                      )
+                    },
+                    child: Hero(
+                      tag: 'recipe' + recipeSnap.data[index].sId,
+                      child: Container(
+                        height: 130,
+                        child: Card(
+                          color: Colors.white,
+                          semanticContainer: true,
+                          clipBehavior: Clip.antiAliasWithSaveLayer,
+                          child: Row(
+                            children: [
+                              recipeSnap.data[index].recipePic != null
+                                  ? ClipRRect(
+                                      borderRadius: BorderRadius.circular(20),
+                                      child: CachedNetworkImage(
+                                        imageUrl: urls.imagesURL +
+                                            "${recipeSnap.data[index].recipePic}",
+                                        imageBuilder:
+                                            (context, imageProvider) =>
+                                                Container(
+                                          width: 150,
+                                          decoration: BoxDecoration(
+                                              image: DecorationImage(
+                                            image: imageProvider,
+                                            fit: BoxFit.fill,
+                                          )),
+                                        ),
+                                        placeholder: (context, url) =>
+                                            Shimmer.fromColors(
+                                          baseColor: Colors.grey[400],
+                                          highlightColor: Colors.white,
+                                          child: Container(width: 150),
+                                        ),
+                                        errorWidget: (context, url, error) =>
+                                            Icon(Icons.error),
                                       ),
-                                      placeholder: (context, url) =>
-                                          Shimmer.fromColors(
-                                        baseColor: Colors.grey[400],
-                                        highlightColor: Colors.white,
-                                        child: Container(width: 150),
-                                      ),
-                                      errorWidget: (context, url, error) =>
-                                          Icon(Icons.error),
-                                    ),
-                                    //                           child: Image.network(
+                                      //                           child: Image.network(
 
-                                    // ),
-                                  )
-                                : ClipRRect(
-                                    borderRadius: BorderRadius.circular(20),
-                                    child: Image.asset(
-                                      "assets/background-app.jpg",
-                                      width: 150,
-                                      fit: BoxFit.fill,
-                                    )),
-                            Flexible(
-                              child: Padding(
-                                padding: const EdgeInsets.only(left: 20.0),
-                                child: Text(
-                                  '${recipeSnap.data[index].title}',
-                                  overflow: TextOverflow.ellipsis,
-                                  textAlign: TextAlign.left,
-                                  maxLines: 3,
-                                  style: new TextStyle(
-                                    fontSize: 16.0,
-                                    color: new Color(0xFF212121),
-                                    fontWeight: FontWeight.bold,
+                                      // ),
+                                    )
+                                  : ClipRRect(
+                                      borderRadius: BorderRadius.circular(20),
+                                      child: Image.asset(
+                                        "assets/background-app.jpg",
+                                        width: 150,
+                                        fit: BoxFit.fill,
+                                      )),
+                              Flexible(
+                                child: Padding(
+                                  padding: const EdgeInsets.only(left: 20.0),
+                                  child: Text(
+                                    '${recipeSnap.data[index].title}',
+                                    overflow: TextOverflow.ellipsis,
+                                    textAlign: TextAlign.left,
+                                    maxLines: 3,
+                                    style: new TextStyle(
+                                      fontSize: 16.0,
+                                      color: new Color(0xFF212121),
+                                      fontWeight: FontWeight.bold,
+                                    ),
                                   ),
                                 ),
-                              ),
-                            )
-                          ],
+                              )
+                            ],
+                          ),
+                          shape: RoundedRectangleBorder(
+                            side: BorderSide(color: Colors.grey[400]),
+                            borderRadius: BorderRadius.circular(20.0),
+                          ),
+                          elevation: 0.5,
+                          margin: EdgeInsets.all(10),
                         ),
-                        shape: RoundedRectangleBorder(
-                          side: BorderSide(color: Colors.grey[400]),
-                          borderRadius: BorderRadius.circular(20.0),
-                        ),
-                        elevation: 0.5,
-                        margin: EdgeInsets.all(10),
                       ),
                     ),
-                  ),
-                );
-              },
-            ),
-          );
-          }else{
-      return Center(
+                  );
+                },
+              ),
+            );
+          } else {
+            return Center(
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: <Widget>[
@@ -135,7 +142,6 @@ class _LikedRecipesState extends State<LikedRecipes>
               ),
             );
           }
-
         } else if (recipeSnap.connectionState == ConnectionState.none ||
             recipeSnap.connectionState == ConnectionState.waiting) {
           return SpinKitWave(
@@ -186,6 +192,14 @@ class _LikedRecipesState extends State<LikedRecipes>
   init() async {
     prefs = await SharedPreferences.getInstance();
     if (prefs.getString("googleID") != null) {
+      userID = id;
+
+      apiProvider.getUser(id).then((user) => {
+        print(user),
+            liked = user['liked'],
+            profilePic = user['profilePic'],
+            
+          });
       setState(() {
         id = prefs.getString("googleID");
       });

@@ -4,6 +4,7 @@ import 'package:recipedia/Pages/App/Details.dart';
 import 'package:recipedia/Providers/ApiService.dart';
 import 'package:recipedia/Constants/Api.dart' as urls;
 import 'package:flutter_spinkit/flutter_spinkit.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:shimmer/shimmer.dart';
 
 class Browse extends StatefulWidget {
@@ -13,6 +14,9 @@ class Browse extends StatefulWidget {
 
 class _BrowseState extends State<Browse> with TickerProviderStateMixin {
   ApiProvider apiProvider = ApiProvider();
+  List liked = [];
+  SharedPreferences prefs;
+  String userID , profilePic;
   Future get;
   Widget recipes() {
     return FutureBuilder(
@@ -31,7 +35,10 @@ class _BrowseState extends State<Browse> with TickerProviderStateMixin {
                       context,
                       MaterialPageRoute(
                           builder: (context) => RecipeDetails(
+                            likedRecipes:liked,
                                 recipe: recipeSnap.data[index],
+                                userID:userID,
+                                profilePic: profilePic,
                               )),
                     )
                   },
@@ -99,12 +106,10 @@ class _BrowseState extends State<Browse> with TickerProviderStateMixin {
                           ],
                         ),
                         shape: RoundedRectangleBorder(
-                          side: BorderSide(color:Colors.grey[400]),
+                          side: BorderSide(color: Colors.grey[400]),
                           borderRadius: BorderRadius.circular(20.0),
-                          
                         ),
                         elevation: 0.5,
-                        
                         margin: EdgeInsets.all(10),
                       ),
                     ),
@@ -124,7 +129,7 @@ class _BrowseState extends State<Browse> with TickerProviderStateMixin {
         } else {
           if (recipeSnap.hasData == null || recipeSnap.hasError) {
             //print('project snapshot data is: ${recipeSnap.data}');
-        return Center(
+            return Center(
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: <Widget>[
@@ -151,8 +156,21 @@ class _BrowseState extends State<Browse> with TickerProviderStateMixin {
     );
   }
 
+  void init() async {
+    prefs = await SharedPreferences.getInstance();
+    var id = prefs.getString("googleID");
+    userID = id;
+   
+    apiProvider.getUser(id).then((user) => {
+      liked = user['liked'],
+       profilePic = user['profilePic'],
+      print(liked)
+    });}
+    
+
   @override
   void initState() {
+    init();
     get = apiProvider.getRecipes();
     super.initState();
   }

@@ -56,12 +56,17 @@ class ApiProvider {
     return null;
   }
 
-  Future<void> like(String recipeID) async {
+  Future<int> like(String recipeID , String userID) async {
     var response = await Dio().post(baseUrl + '/like', data: {
       'id': recipeID,
+      'userID': userID
     });
     print(response);
-    return null;
+    if(response.statusCode==200){
+      return 1;
+    }else{
+      return 0;
+    }
   }
 
   Future<void> rate(String recipeID, int rating) async {
@@ -85,5 +90,15 @@ class ApiProvider {
     // if (response.statusCode != 200) {
     //   throw Exception('Failed to load');
     // }
+  }
+
+  Future getUser(String userID) async {
+    final response =
+        await Dio().post(baseUrl + '/getUser', data: {"userID": userID});
+    if (response.statusCode == 200) {
+      return response.data['data'];
+    } else {
+      throw Exception('Unable to fetch products from the REST API');
+    }
   }
 }
