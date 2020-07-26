@@ -21,6 +21,8 @@ class _RecipeDetailsState extends State<RecipeDetails> {
 
   @override
   Widget build(BuildContext context) {
+    List<Widget> stars = List<Widget>();
+    //for(var i = 0; i < widget.recipe.rating)
     return SafeArea(
       child: Scaffold(
         backgroundColor: Colors.white,
@@ -140,19 +142,20 @@ class _RecipeDetailsState extends State<RecipeDetails> {
               children: [
                 Padding(
                     padding: const EdgeInsets.only(top: 10.0),
-                    child: RatingBar(
-                      itemSize: 25.0,
-                      initialRating: widget.recipe.rating ?? 3.5,
-                      minRating: 1,
-                      direction: Axis.horizontal,
-                      allowHalfRating: true,
-                      itemCount: 5,
-                      itemPadding: EdgeInsets.symmetric(horizontal: 4.0),
-                      itemBuilder: (context, _) => Icon(
-                        Icons.star,
-                        color: Colors.redAccent,
-                      ),
-                      onRatingUpdate: (rating) {},
+                    child: InkWell(
+                      onTap: () {
+                        showDialog(
+                            context: context,
+                            builder: (BuildContext context) {
+                              return AlertDialog(
+                                title: Text("Alert Dialog"),
+                                content: Text("Dialog Content"),
+                              );
+                            });
+                      },
+                      child: Row(
+                        children: []
+                      )
                     )),
               ],
             ),
@@ -162,8 +165,7 @@ class _RecipeDetailsState extends State<RecipeDetails> {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     Icon(Icons.fastfood,
-                        color:
-                            widget.recipe.isVeg ? Colors.green : Colors.red),
+                        color: widget.recipe.isVeg ? Colors.green : Colors.red),
                     Padding(
                       padding: const EdgeInsets.all(2.0),
                       child: Text(
@@ -225,12 +227,12 @@ class _RecipeDetailsState extends State<RecipeDetails> {
                 itemCount: widget.recipe.ingredients.length,
                 itemBuilder: (context, pos) {
                   return Padding(
-                    padding: const EdgeInsets.symmetric(
-                        vertical: 2, horizontal: 32),
-                    child:
-                        Row(children: [
-                          Icon(Icons.check_circle),
-                          Text(' ' + widget.recipe.ingredients[pos])]),
+                    padding:
+                        const EdgeInsets.symmetric(vertical: 2, horizontal: 32),
+                    child: Row(children: [
+                      Icon(Icons.check_circle),
+                      Text(' ' + widget.recipe.ingredients[pos])
+                    ]),
                   );
                 }),
             Padding(
@@ -250,8 +252,8 @@ class _RecipeDetailsState extends State<RecipeDetails> {
                 itemCount: widget.recipe.steps.length,
                 itemBuilder: (context, pos) {
                   return Padding(
-                    padding: const EdgeInsets.symmetric(
-                        vertical: 2, horizontal: 32),
+                    padding:
+                        const EdgeInsets.symmetric(vertical: 2, horizontal: 32),
                     child: Row(children: [
                       Text('Step ${pos + 1}: ${widget.recipe.steps[pos]}')
                     ]),
