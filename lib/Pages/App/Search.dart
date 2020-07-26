@@ -2,7 +2,6 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:recipedia/Providers/ApiService.dart';
-import 'package:recipedia/widgets/shimmer.dart';
 import 'package:shimmer/shimmer.dart';
 import 'package:recipedia/Constants/Api.dart' as urls;
 import 'Details.dart';
