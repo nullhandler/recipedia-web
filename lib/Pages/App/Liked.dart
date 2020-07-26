@@ -18,7 +18,6 @@ class _LikedRecipesState extends State<LikedRecipes>
   List liked = [];
   String userID, profilePic;
   Future get;
-  String id;
   Widget recipes() {
     return FutureBuilder(
       builder: (context, recipeSnap) {
@@ -176,7 +175,7 @@ class _LikedRecipesState extends State<LikedRecipes>
           return Align(child: Center(child: Text("Error")));
         }
       },
-      future: apiProvider.getLikedRecipes(id),
+      future: apiProvider.getLikedRecipes(userID),
     );
   }
 
@@ -192,17 +191,15 @@ class _LikedRecipesState extends State<LikedRecipes>
   init() async {
     prefs = await SharedPreferences.getInstance();
     if (prefs.getString("googleID") != null) {
+      var id = prefs.getString("googleID");
       userID = id;
 
       apiProvider.getUser(id).then((user) => {
-        print(user),
             liked = user['liked'],
             profilePic = user['profilePic'],
-            
+            print(liked)
           });
-      setState(() {
-        id = prefs.getString("googleID");
-      });
+      setState(() {});
     }
   }
 
