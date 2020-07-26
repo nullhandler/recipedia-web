@@ -34,10 +34,11 @@ class _AppHomeState extends State<AppHome> with TickerProviderStateMixin {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.white,
       appBar: AppBar(
         leading: IconButton(
             icon: Icon(
-              Icons.add,
+              Icons.menu,
               color: Colors.black,
             ),
             onPressed: () {}),
@@ -58,7 +59,7 @@ class _AppHomeState extends State<AppHome> with TickerProviderStateMixin {
         title: Text(
           "Recipedia",
           style: TextStyle(
-              fontSize: 36, color: Color(0xff262a46), fontFamily: 'RobotoMono'),
+              fontSize: 24, color: Color(0xff262a46) , fontWeight: FontWeight.bold),
         ),
         backgroundColor: Colors.transparent,
         elevation: 0.0,

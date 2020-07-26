@@ -37,16 +37,17 @@ class _BrowseState extends State<Browse> with TickerProviderStateMixin {
                   },
                   child: Hero(
                     tag: 'recipe' + recipeSnap.data[index].sId,
-                                      child: Container(
-                      height: 150,
+                    child: Container(
+                      height: 130,
                       child: Card(
+                        color: Colors.white,
                         semanticContainer: true,
                         clipBehavior: Clip.antiAliasWithSaveLayer,
                         child: Row(
                           children: [
                             recipeSnap.data[index].recipePic != null
                                 ? ClipRRect(
-                                    borderRadius: BorderRadius.circular(10),
+                                    borderRadius: BorderRadius.circular(20),
                                     child: CachedNetworkImage(
                                       imageUrl: urls.imagesURL +
                                           "${recipeSnap.data[index].recipePic}",
@@ -73,7 +74,7 @@ class _BrowseState extends State<Browse> with TickerProviderStateMixin {
                                     // ),
                                   )
                                 : ClipRRect(
-                                    borderRadius: BorderRadius.circular(10),
+                                    borderRadius: BorderRadius.circular(20),
                                     child: Image.asset(
                                       "assets/background-app.jpg",
                                       width: 150,
@@ -98,9 +99,12 @@ class _BrowseState extends State<Browse> with TickerProviderStateMixin {
                           ],
                         ),
                         shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(10.0),
+                          side: BorderSide(color:Colors.grey[400]),
+                          borderRadius: BorderRadius.circular(20.0),
+                          
                         ),
-                        elevation: 2,
+                        elevation: 0.5,
+                        
                         margin: EdgeInsets.all(10),
                       ),
                     ),
@@ -120,7 +124,25 @@ class _BrowseState extends State<Browse> with TickerProviderStateMixin {
         } else {
           if (recipeSnap.hasData == null || recipeSnap.hasError) {
             //print('project snapshot data is: ${recipeSnap.data}');
-            return Align(child: Center(child: Text("Error")));
+        return Center(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: <Widget>[
+                  Text(
+                    '404',
+                    style: TextStyle(fontSize: 30, fontWeight: FontWeight.bold),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.all(2.0),
+                    child: Text(
+                      'Aw , Snap!',
+                      style:
+                          TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                    ),
+                  ),
+                ],
+              ),
+            );
           }
           return Align(child: Center(child: Text("Error")));
         }

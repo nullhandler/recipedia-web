@@ -21,6 +21,24 @@ class ApiProvider {
     }
   }
 
+  Future getLikedRecipes(String userID) async {
+    final response =
+        await Dio().post(baseUrl + '/getLiked', data: {"userID": userID});
+    if (response.statusCode == 200) {
+      if (response.data['success'] == true) {
+        List<Recipe> temp = [];
+        temp = RecipeModel.fromJson(response.data).data;
+        print(temp);
+        // temp.add(Recipe.fromJson(json.decode(response.body)));
+        return temp;
+      } else {
+        return 0;
+      }
+    } else {
+      throw Exception('Unable to fetch products from the REST API');
+    }
+  }
+
   Future<void> createRecipe(File file, Map data) async {
     var formdata = FormData.fromMap(data);
 
@@ -57,7 +75,8 @@ class ApiProvider {
     final response = await http.get(baseUrl + '/search?q=' + query);
     print(response.body);
     if (json.decode(response.body)['error'] != null) {
-      return Future.error("Error Info", StackTrace.fromString("Recipe Not Found"));
+      return Future.error(
+          "Error Info", StackTrace.fromString("Recipe Not Found"));
     } else {
       List<Recipe> temp = [];
       temp = RecipeModel.fromJson(json.decode(response.body)).data;

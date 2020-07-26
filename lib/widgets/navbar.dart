@@ -67,7 +67,7 @@ class _FloatingNavbarState extends State<FloatingNavbar> {
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 60, vertical: 8),
             child: Container(
-              padding: EdgeInsets.only(bottom: 8, top: 8),
+              padding: EdgeInsets.only(bottom: 10, top:10),
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(widget.borderRadius),
                 color: widget.backgroundColor,
