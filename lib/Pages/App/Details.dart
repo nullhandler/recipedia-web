@@ -24,7 +24,7 @@ class _RecipeDetailsState extends State<RecipeDetails> {
   ApiProvider apiProvider = ApiProvider();
   bool didUserLike = false;
   var userRating = 0.0;
-  
+
   @override
   void initState() {
     super.initState();
@@ -319,49 +319,87 @@ class _RecipeDetailsState extends State<RecipeDetails> {
                       ],
                     )),
                 Padding(
-                  padding: const EdgeInsets.all(8.0),
+                    padding: const EdgeInsets.all(10.0),
+                    child: Divider(
+                      thickness: 0.8,
+                      color: Color(0xff262a46),
+                    )),
+                Padding(
+                  padding: const EdgeInsets.all(1.0),
                   child: Text(
-                    'Ingredients',
+                    '- Ingredients -',
                     overflow: TextOverflow.ellipsis,
+                    textAlign: TextAlign.center,
+                    maxLines: 3,
                     style: new TextStyle(
                       fontSize: 18.0,
                       color: new Color(0xFF212121),
+                      fontWeight: FontWeight.bold,
                     ),
                   ),
                 ),
                 ListView.builder(
-                    physics: ClampingScrollPhysics(),
+                    physics: NeverScrollableScrollPhysics(),
                     shrinkWrap: true,
                     itemCount: widget.recipe.ingredients.length,
                     itemBuilder: (context, pos) {
                       return Padding(
                         padding: const EdgeInsets.symmetric(
-                            vertical: 2, horizontal: 32),
-                        child: Row(
-                            children: [Text(widget.recipe.ingredients[pos])]),
+                            vertical: 5, horizontal: 30),
+                        child: Row(children: [
+                          Padding(
+                            padding: const EdgeInsets.all(2.0),
+                            child: Icon(Icons.check),
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.all(2.0),
+                            child: Text(widget.recipe.ingredients[pos]),
+                          )
+                        ]),
                       );
                     }),
                 Padding(
-                  padding: const EdgeInsets.all(8.0),
+                    padding: const EdgeInsets.all(10.0),
+                    child: Divider(
+                      thickness: 0.8,
+                      color: Color(0xff262a46),
+                    )),
+                Padding(
+                  padding: const EdgeInsets.all(1.0),
                   child: Text(
-                    'Steps',
+                    '- Steps -',
                     overflow: TextOverflow.ellipsis,
+                    textAlign: TextAlign.center,
+                    maxLines: 3,
                     style: new TextStyle(
                       fontSize: 18.0,
                       color: new Color(0xFF212121),
+                      fontWeight: FontWeight.bold,
                     ),
                   ),
                 ),
                 ListView.builder(
-                    physics: ClampingScrollPhysics(),
+                    physics: NeverScrollableScrollPhysics(),
                     shrinkWrap: true,
                     itemCount: widget.recipe.steps.length,
                     itemBuilder: (context, pos) {
                       return Padding(
                         padding: const EdgeInsets.symmetric(
-                            vertical: 2, horizontal: 32),
+                            vertical: 5, horizontal: 30),
                         child: Row(children: [
-                          Text('Step ${pos + 1}: ${widget.recipe.steps[pos]}')
+                          Padding(
+                            padding: const EdgeInsets.all(2.0),
+                            child: Text(
+                              'Step ${pos + 1} : ${widget.recipe.steps[pos]}',
+                              overflow: TextOverflow.ellipsis,
+                              textAlign: TextAlign.center,
+                              maxLines: 3,
+                              style: new TextStyle(
+                                color: new Color(0xFF212121),
+                                fontWeight: FontWeight.w500,
+                              ),
+                            ),
+                          )
                         ]),
                       );
                     }),
