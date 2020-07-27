@@ -69,9 +69,9 @@ class ApiProvider {
     }
   }
 
-  Future<void> rate(String recipeID, int rating) async {
+  Future<void> rate(String recipeID, String userid, double rating) async {
     var response = await Dio()
-        .post(baseUrl + '/rate', data: {'id': recipeID, 'rating': rating});
+        .post(baseUrl + '/rate', data: {'id': recipeID,'userID':userid, 'rating': rating.toInt()});
     print(response);
     return null;
   }

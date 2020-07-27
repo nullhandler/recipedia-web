@@ -22,7 +22,9 @@ class RecipeDetails extends StatefulWidget {
 
 class _RecipeDetailsState extends State<RecipeDetails> {
   ApiProvider apiProvider = ApiProvider();
-  bool didUserLike, didUserRate = false;
+  bool didUserLike = false;
+  var userRating = 0.0;
+  
   @override
   void initState() {
     super.initState();
@@ -59,6 +61,26 @@ class _RecipeDetailsState extends State<RecipeDetails> {
 
   @override
   Widget build(BuildContext context) {
+    List<Widget> stars = List<Widget>();
+    for (int i = 0; i < widget.recipe.rating.floor(); i++) {
+      stars.add(Icon(
+        Icons.star,
+        color: Colors.amber,
+      ));
+    }
+    print('${widget.recipe.rating} > ${widget.recipe.rating.floorToDouble()}');
+    if (widget.recipe.rating > widget.recipe.rating.floorToDouble()) {
+      stars.add(Icon(
+        Icons.star_half,
+        color: Colors.amber,
+      ));
+    }
+    for (int i = widget.recipe.rating.ceil(); i < 5; i++) {
+      stars.add(Icon(
+        Icons.star_border,
+        color: Colors.amber,
+      ));
+    }
     return WillPopScope(
       onWillPop: () {
         if (didUserLike == true) {
@@ -177,7 +199,7 @@ class _RecipeDetailsState extends State<RecipeDetails> {
                   ],
                 ),
                 Padding(
-                  padding: const EdgeInsets.only(top: 25.0),
+                  padding: const EdgeInsets.only(top: 25.0, bottom: 8),
                   child: Text(
                     '${widget.recipe.title}',
                     overflow: TextOverflow.ellipsis,
@@ -190,26 +212,57 @@ class _RecipeDetailsState extends State<RecipeDetails> {
                     ),
                   ),
                 ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Padding(
-                        padding: const EdgeInsets.only(top: 10.0),
-                        child: RatingBar(
-                          itemSize: 25.0,
-                          initialRating: widget.recipe.rating ?? 3.5,
-                          minRating: 1,
-                          direction: Axis.horizontal,
-                          allowHalfRating: true,
-                          itemCount: 5,
-                          itemPadding: EdgeInsets.symmetric(horizontal: 4.0),
-                          itemBuilder: (context, _) => Icon(
-                            Icons.star,
-                            color: Colors.redAccent,
-                          ),
-                          onRatingUpdate: (rating) {},
-                        )),
-                  ],
+                InkWell(
+                  onTap: () {
+                    showDialog(
+                        context: context,
+                        builder: (BuildContext context) {
+                          return AlertDialog(
+                            actions: [
+                              FlatButton(
+                                onPressed: () {
+                                  apiProvider.rate(widget.recipe.sId,
+                                      widget.userID, userRating);
+                                  Navigator.pop(context);
+                                },
+                                child: Text('Rate'),
+                              ),
+                              FlatButton(
+                                onPressed: () {
+                                  Navigator.pop(context);
+                                },
+                                child: Text('Cancel'),
+                              ),
+                            ],
+                            title: Text("Rate this recipe"),
+                            content: Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                RatingBar(
+                                  itemSize: 25.0,
+                                  initialRating: userRating,
+                                  minRating: 1,
+                                  direction: Axis.horizontal,
+                                  allowHalfRating: true,
+                                  itemCount: 5,
+                                  itemPadding:
+                                      EdgeInsets.symmetric(horizontal: 4.0),
+                                  itemBuilder: (context, _) => Icon(
+                                    Icons.star,
+                                    color: Colors.amber,
+                                  ),
+                                  onRatingUpdate: (rating) {},
+                                ),
+                              ],
+                            ),
+                          );
+                        });
+                  },
+                  child: Row(
+                    mainAxisSize: MainAxisSize.min,
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: stars,
+                  ),
                 ),
                 Padding(
                     padding: const EdgeInsets.only(top: 10.0),
@@ -277,6 +330,7 @@ class _RecipeDetailsState extends State<RecipeDetails> {
                   ),
                 ),
                 ListView.builder(
+                    physics: ClampingScrollPhysics(),
                     shrinkWrap: true,
                     itemCount: widget.recipe.ingredients.length,
                     itemBuilder: (context, pos) {
@@ -299,6 +353,7 @@ class _RecipeDetailsState extends State<RecipeDetails> {
                   ),
                 ),
                 ListView.builder(
+                    physics: ClampingScrollPhysics(),
                     shrinkWrap: true,
                     itemCount: widget.recipe.steps.length,
                     itemBuilder: (context, pos) {
