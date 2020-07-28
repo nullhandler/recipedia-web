@@ -39,11 +39,16 @@ class ApiProvider {
     }
   }
 
-  Future<void> createRecipe(File file, Map data) async {
-    var formdata = FormData.fromMap(data);
+  Future<void> createRecipe(File file, Map<String , dynamic> data) async {
+    String fileName = file.path.split('/').last;
+    Map finalData = data;
+    finalData['image'] =
+        await MultipartFile.fromFile(file.path, filename: fileName);
+    //print(finalData);
+    var formdata = FormData.fromMap(finalData);
 
     // TO DO , ADD FILE UPLOAD
-
+    //print(formdata);
     var response = await Dio().post(baseUrl + '/create', data: formdata);
     print(response);
     return null;
@@ -56,23 +61,21 @@ class ApiProvider {
     return null;
   }
 
-  Future<int> like(String recipeID , String userID) async {
-    var response = await Dio().post(baseUrl + '/like', data: {
-      'id': recipeID,
-      'userID': userID
-    });
+  Future<int> like(String recipeID, String userID) async {
+    var response = await Dio()
+        .post(baseUrl + '/like', data: {'id': recipeID, 'userID': userID});
     print(response);
-    if(response.statusCode==200){
+    if (response.statusCode == 200) {
       return 1;
-    }else{
+    } else {
       return 0;
     }
   }
 
   Future<void> rate(String recipeID, String userid, double rating) async {
     print(rating.toInt());
-    var response = await Dio()
-        .post(baseUrl + '/rate', data: {'id': recipeID,'userID':userid, 'rating': rating.toInt()});
+    var response = await Dio().post(baseUrl + '/rate',
+        data: {'id': recipeID, 'userID': userid, 'rating': rating.toInt()});
     print(response);
     return null;
   }
