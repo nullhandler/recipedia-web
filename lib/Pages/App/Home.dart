@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:recipedia/Pages/App/Browse.dart';
+import 'package:recipedia/Pages/App/Create.dart';
 import 'package:recipedia/Pages/App/Liked.dart';
 import 'package:recipedia/Pages/App/Search.dart';
 import 'package:recipedia/widgets/navbar.dart';
@@ -41,7 +42,10 @@ class _AppHomeState extends State<AppHome> with TickerProviderStateMixin {
               Icons.menu,
               color: Colors.black,
             ),
-            onPressed: () {}),
+            onPressed: () {
+              Navigator.push(context,
+                  MaterialPageRoute(builder: (context) => CreateRecipe()));
+            }),
         // actions: [ClipOval(child: Image.network('${widget.pic}'))],
         actions: [
           Padding(
@@ -59,7 +63,9 @@ class _AppHomeState extends State<AppHome> with TickerProviderStateMixin {
         title: Text(
           "Recipedia",
           style: TextStyle(
-              fontSize: 24, color: Color(0xff262a46) , fontWeight: FontWeight.bold),
+              fontSize: 24,
+              color: Color(0xff262a46),
+              fontWeight: FontWeight.bold),
         ),
         backgroundColor: Colors.transparent,
         elevation: 0.0,
