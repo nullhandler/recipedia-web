@@ -39,14 +39,18 @@ class ApiProvider {
     }
   }
 
-  Future<void> createRecipe(File file, Map<String , dynamic> data) async {
-    String fileName = file.path.split('/').last;
+  Future<void> createRecipe(File file, Map<String, dynamic> data) async {
+    String fileName;
     Map finalData = data;
-    finalData['image'] =
-        await MultipartFile.fromFile(file.path, filename: fileName);
+    if (file != null) {
+      fileName = file.path.split('/').last;
+      finalData['image'] =
+          await MultipartFile.fromFile(file.path, filename: fileName);
+    }
+
     //print(finalData);
     var formdata = FormData.fromMap(finalData);
-
+    print(formdata.fields);
     // TO DO , ADD FILE UPLOAD
     //print(formdata);
     var response = await Dio().post(baseUrl + '/create', data: formdata);
