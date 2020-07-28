@@ -221,6 +221,7 @@ class _RecipeDetailsState extends State<RecipeDetails> {
                             actions: [
                               FlatButton(
                                 onPressed: () {
+                                  print(userRating);
                                   apiProvider.rate(widget.recipe.sId,
                                       widget.userID, userRating);
                                   Navigator.pop(context);
@@ -251,7 +252,11 @@ class _RecipeDetailsState extends State<RecipeDetails> {
                                     Icons.star,
                                     color: Colors.amber,
                                   ),
-                                  onRatingUpdate: (rating) {},
+                                  onRatingUpdate: (rating) {
+                                    setState(() {
+                                      userRating = rating;
+                                    });
+                                  },
                                 ),
                               ],
                             ),
