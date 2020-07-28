@@ -20,17 +20,6 @@ class _AppHomeState extends State<AppHome> with TickerProviderStateMixin {
   int _index = 0;
   TabController _tabController;
   AnimationController _animationController;
-  ApiProvider _apiProvider = new ApiProvider();
-  File _image;
-  final picker = ImagePicker();
-
-  Future getImage() async {
-    final pickedFile = await picker.getImage(source: ImageSource.camera);
-
-    setState(() {
-      _image = File(pickedFile.path);
-    });
-  }
 
 
   final List<Widget> _listTabs = [Browse(), Browse(), LikedRecipes()];

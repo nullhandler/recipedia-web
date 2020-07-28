@@ -1,8 +1,11 @@
+import 'dart:io';
+
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:numberpicker/numberpicker.dart';
 import 'package:recipedia/Constants/Api.dart' as urls;
+import 'package:recipedia/Providers/ApiService.dart';
 import 'package:shimmer/shimmer.dart';
 
 class CreateRecipe extends StatefulWidget {
@@ -11,6 +14,10 @@ class CreateRecipe extends StatefulWidget {
 }
 
 class _CreateRecipeState extends State<CreateRecipe> {
+
+  ApiProvider _apiProvider = new ApiProvider();
+  File _image;
+  final picker = ImagePicker();
   List<Widget> steps = List<Widget>();
   List<Widget> ingredients = List<Widget>();
   String imgUrl;
@@ -38,6 +45,14 @@ class _CreateRecipeState extends State<CreateRecipe> {
       ),
     ));
     setState(() {});
+  }
+
+  Future getImage() async {
+    final pickedFile = await picker.getImage(source: ImageSource.camera);
+
+    setState(() {
+      _image = File(pickedFile.path);
+    });
   }
 
   addStep() {
@@ -133,16 +148,18 @@ class _CreateRecipeState extends State<CreateRecipe> {
                         )
                       : InkWell(
                           onTap: () {
-                            getImage().then((value) => {
-                              _apiProvider.createRecipe(_image, {
-                                "time":100,
+                            getImage().then((value) async {
+                              await _apiProvider.createRecipe(_image, {
+                                "time": mins,
                                 "title":"PanCakes By Acer",
-                                "is_veg": true,
+                                "is_veg": isVeg,
                                 "userID" : "jdosdjodjdod"
-                              })
+                              });
+                              // TODO: imgUrl = picked Image name
+                              setState(() {
+                                
+                              });
                             });
-                            // imgUrl = picked Image name
-                            // TODO: Image Pick Logic
                           },
                           child: Padding(
                               padding: EdgeInsets.only(top: 50.0),
