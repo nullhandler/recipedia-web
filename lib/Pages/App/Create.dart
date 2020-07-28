@@ -1,5 +1,6 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:numberpicker/numberpicker.dart';
 import 'package:recipedia/Constants/Api.dart' as urls;
 import 'package:shimmer/shimmer.dart';
@@ -132,6 +133,14 @@ class _CreateRecipeState extends State<CreateRecipe> {
                         )
                       : InkWell(
                           onTap: () {
+                            getImage().then((value) => {
+                              _apiProvider.createRecipe(_image, {
+                                "time":100,
+                                "title":"PanCakes By Acer",
+                                "is_veg": true,
+                                "userID" : "jdosdjodjdod"
+                              })
+                            });
                             // imgUrl = picked Image name
                             // TODO: Image Pick Logic
                           },
