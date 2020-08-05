@@ -1,3 +1,3 @@
-const url = 'http://61bfec391955.ngrok.io';
+const url = 'http://recipedia.selvasoft.in';
 const baseURL = '$url/api';
 const imagesURL = url;
