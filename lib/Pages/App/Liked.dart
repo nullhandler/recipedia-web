@@ -17,8 +17,13 @@ class _LikedRecipesState extends State<LikedRecipes>
   ApiProvider apiProvider = ApiProvider();
   List liked = [];
   String userID, profilePic;
-  Future get;
+  bool isLoading = true;
   Widget recipes() {
+    if (isLoading) {
+      return Center(
+        child: CircularProgressIndicator(),
+      );
+    }
     return FutureBuilder(
       builder: (context, recipeSnap) {
         if (recipeSnap.hasData) {
@@ -199,7 +204,9 @@ class _LikedRecipesState extends State<LikedRecipes>
             profilePic = user['profilePic'],
             print(liked)
           });
-      setState(() {});
+      setState(() {
+        isLoading = false;
+      });
     }
   }
 

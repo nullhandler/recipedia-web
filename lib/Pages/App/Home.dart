@@ -42,7 +42,7 @@ class _AppHomeState extends State<AppHome> with TickerProviderStateMixin {
       appBar: AppBar(
         leading: IconButton(
             icon: Icon(
-              Icons.menu,
+              Icons.add,
               color: Colors.black,
             ),
             onPressed: () {
