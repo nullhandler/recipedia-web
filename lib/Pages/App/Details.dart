@@ -84,12 +84,12 @@ class _RecipeDetailsState extends State<RecipeDetails> {
     return WillPopScope(
       onWillPop: () {
         if (didUserLike == true) {
-          Navigator.push(
+          Navigator.pushAndRemoveUntil(
               context,
               MaterialPageRoute(
                   builder: (context) => AppHome(
                         pic: widget.profilePic,
-                      )));
+                      )),(Route<dynamic> route) => false);
         } else {
           Navigator.pop(context);
         }
